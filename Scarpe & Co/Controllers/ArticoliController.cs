@@ -44,20 +44,38 @@ namespace Scarpe___Co.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Salva le immagini caricate nel file system solo se sono state fornite
                 if (articolo.FileImmagineCopertina != null)
+                {
                     articolo.ImmagineCopertina = await SalvaImmagine(articolo.FileImmagineCopertina);
+                    if (articolo.ImmagineCopertina == null)
+                    {
+                        ModelState.AddModelError(string.Empty, "Errore nel salvataggio dell'immagine di copertina.");
+                    }
+                }
 
                 if (articolo.FileImmagineAggiuntiva1 != null)
+                {
                     articolo.ImmagineAggiuntiva1 = await SalvaImmagine(articolo.FileImmagineAggiuntiva1);
+                    if (articolo.ImmagineAggiuntiva1 == null)
+                    {
+                        ModelState.AddModelError(string.Empty, "Errore nel salvataggio dell'immagine aggiuntiva 1.");
+                    }
+                }
 
                 if (articolo.FileImmagineAggiuntiva2 != null)
+                {
                     articolo.ImmagineAggiuntiva2 = await SalvaImmagine(articolo.FileImmagineAggiuntiva2);
+                    if (articolo.ImmagineAggiuntiva2 == null)
+                    {
+                        ModelState.AddModelError(string.Empty, "Errore nel salvataggio dell'immagine aggiuntiva 2.");
+                    }
+                }
 
-                // Aggiungi l'articolo al repository
-                ArticoloRepository.AggiungiArticolo(articolo);
-
-                return RedirectToAction(nameof(Index));
+                if (ModelState.ErrorCount == 0)
+                {
+                    ArticoloRepository.AggiungiArticolo(articolo);
+                    return RedirectToAction(nameof(Index));
+                }
             }
 
             return View(articolo);
@@ -68,22 +86,28 @@ namespace Scarpe___Co.Controllers
             if (file == null || file.Length == 0)
                 return null;
 
-            var uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
-            var uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(file.FileName);
-            var filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-            if (!Directory.Exists(uploadsFolder))
+            try
             {
-                Directory.CreateDirectory(uploadsFolder);
-            }
+                var uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
+                var uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(file.FileName);
+                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
-            // Salva il file nell'upload folder
-            using (var stream = new FileStream(filePath, FileMode.Create))
+                if (!Directory.Exists(uploadsFolder))
+                {
+                    Directory.CreateDirectory(uploadsFolder);
+                }
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+
+                return "/uploads/" + uniqueFileName;
+            }
+            catch (Exception ex)
             {
-                await file.CopyToAsync(stream);
+                return null;
             }
-
-            return "/uploads/" + uniqueFileName; 
         }
     }
 }

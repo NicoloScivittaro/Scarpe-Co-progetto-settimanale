@@ -7,4 +7,8 @@
     <RootNamespace>Scarpe___Co</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\uploads\" />
+  </ItemGroup>
+
 </Project>
