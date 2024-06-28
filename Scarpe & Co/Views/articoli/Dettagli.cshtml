@@ -1,0 +1,28 @@
+﻿@model Scarpe___Co.Models.Articolo
+
+@{
+    ViewData["Title"] = Model.Nome;
+}
+
+<h1>@Model.Nome</h1>
+<p>@Model.Prezzo.ToString("C")</p>
+<p>@Model.Descrizione</p>
+
+<div>
+    <img src="~/images/@Model.ImmagineCopertina" alt="@Model.Nome" class="img-fluid" />
+</div>
+<div>
+    <img src="~/images/@Model.ImmagineAggiuntiva1" alt="@Model.Nome" class="img-fluid" />
+</div>
+<div>
+    <img src="~/images/@Model.ImmagineAggiuntiva2" alt="@Model.Nome" class="img-fluid" />
+</div>
+
+<style>
+    .img-fluid {
+        max-width: 100%; 
+        height: auto; 
+        display: block;
+        margin: auto; 
+    }
+</style>

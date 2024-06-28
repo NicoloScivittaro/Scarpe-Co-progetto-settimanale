@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="jumbotron text-center">
+    <h1 class="display-4">Benvenuti su Scarpe & Co</h1>
+    <p class="lead">Il miglior posto per trovare le tue scarpe da tennis preferite.</p>
+    <hr class="my-4">
+    <p>Esplora la nostra collezione di scarpe sportive, comode e alla moda.</p>
+    <a class="btn btn-primary btn-lg" href="@Url.Action("Index", "Articoli")" role="button">Vedi la vetrina</a>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <img src="~/images/scarpe_sportive.jpg" class="card-img-top" alt="Scarpe Sportive">
+                <div class="card-body">
+                    <h5 class="card-title">Scarpe Sportive</h5>
+                    <p class="card-text">Comode e leggere per ogni occasione sportiva.</p>
+                    <a href="@Url.Action("Dettagli", "Articoli", new { id = 1 })" class="btn btn-primary">Scopri di più</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
